@@ -136,7 +136,8 @@ db.recursos.find({
 })
 
 # Recursos terminados con valoración alta
- Recursos agregados en los últimos 30 días
+
+Recursos agregados en los últimos 30 días
 db.recursos.find({
   "fecha_agregado": {
     "$gte": new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
