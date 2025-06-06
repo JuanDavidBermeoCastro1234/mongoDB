@@ -49,7 +49,7 @@ db.createCollection("recursos")
 # Importar datos desde archivo JSON (ejecutar en terminal)
 mongoimport --db mis_recursos_db --collection recursos --file recursos.json --jsonArray
 
-// Insertar un documento
+# Insertar un documento
 db.recursos.insertOne({
   "nombre": "Ejemplo",
   "genero": "Drama",
@@ -63,25 +63,25 @@ db.recursos.insertOne({
   "usuario_id": "user123"
 })
 
-// Insertar múltiples documentos
+# Insertar múltiples documentos
 db.recursos.insertMany([
   { ... },
   { ... }
 ])
 
-// Todos los recursos
+# Todos los recursos
 db.recursos.find()
 
-// Recursos de un usuario específico
+#Recursos de un usuario específico
 db.recursos.find({ "usuario_id": "user123" })
 
-// Con proyección (solo campos específicos)
+# Con proyección (solo campos específicos)
 db.recursos.find(
   { "usuario_id": "user123" },
   { "nombre": 1, "estado": 1, "valoracion": 1 }
 )
 
-// Actualizar un recurso
+# Actualizar un recurso
 db.recursos.updateOne(
   { "nombre": "Breaking Bad", "usuario_id": "user123" },
   {
@@ -93,7 +93,7 @@ db.recursos.updateOne(
   }
 )
 
-// Actualizar fecha de terminación
+# Actualizar fecha de terminación
 db.recursos.updateOne(
   { "nombre": "Dune", "usuario_id": "user123" },
   {
@@ -103,39 +103,40 @@ db.recursos.updateOne(
   }
 )
 
-// Eliminar un recurso específico
+# Eliminar un recurso específico
 db.recursos.deleteOne({ "nombre": "Ejemplo", "usuario_id": "user123" })
 
-// Eliminar todos los recursos de un usuario
+# Eliminar todos los recursos de un usuario
 db.recursos.deleteMany({ "usuario_id": "user123" })
 
-// Por estado
+# Por estado
 db.recursos.find({
   "estado": "Terminado",
   "usuario_id": "user123"
 })
 
-// Por formato y plataforma
+# Por formato y plataforma
 db.recursos.find({
   "formato": "Película",
   "plataforma": "Netflix",
   "usuario_id": "user123"
 })
 
-// Búsqueda por nombre (insensible a mayúsculas)
+# Búsqueda por nombre (insensible a mayúsculas)
 db.recursos.find({
   "nombre": { "$regex": "witcher", "$options": "i" },
   "usuario_id": "user123"
 })
 
-// Recursos terminados con valoración alta
+# Recursos terminados con valoración alta
 db.recursos.find({
   "estado": "Terminado",
   "valoracion": { "$gte": 4 },
   "usuario_id": "user123"
 })
 
-// Recursos agregados en los últimos 30 días
+# Recursos terminados con valoración alta
+ Recursos agregados en los últimos 30 días
 db.recursos.find({
   "fecha_agregado": {
     "$gte": new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
