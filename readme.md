@@ -21,23 +21,8 @@ Cada documento contiene los siguientes campos:
 - `fecha_agregado`: Date (Fecha de creación del registro)
 - `usuario_id`: String (Identificador del usuario)
 
-Ejemplo de estructura:
-
-```json
-{
-  "nombre": "Breaking Bad",
-  "genero": "Drama",
-  "plataforma": "Netflix",
-  "estado": "Terminado",
-  "formato": "Serie",
-  "fecha_terminacion": "2023-05-15",
-  "valoracion": 5,
-  "reseña": "Una de las mejores series de todos los tiempos",
-  "fecha_agregado": "2023-05-16",
-  "usuario_id": "user123"
-}
-
-
+Comandos para Configurar la Base de Datos
+bash
 # Conectar a MongoDB
 mongo
 
@@ -49,8 +34,10 @@ db.createCollection("recursos")
 
 # Importar datos desde archivo JSON (ejecutar en terminal)
 mongoimport --db mis_recursos_db --collection recursos --file recursos.json --jsonArray
-
-// Insertar un documento
+Operaciones CRUD
+Crear recursos
+javascript
+// Insertar un solo documento
 db.recursos.insertOne({
   "nombre": "Ejemplo",
   "genero": "Drama",
@@ -65,24 +52,17 @@ db.recursos.insertOne({
 })
 
 // Insertar múltiples documentos
-db.recursos.insertMany([
-  {...},
-  {...}
-])
-
-// Todos los recursos
+db.recursos.insertMany([{...}, {...}])
+Leer recursos
+javascript
+// Obtener todos los recursos
 db.recursos.find()
 
 // Recursos de un usuario específico
 db.recursos.find({"usuario_id": "user123"})
-
-// Con proyección (solo campos específicos)
-db.recursos.find(
-  {"usuario_id": "user123"},
-  {"nombre": 1, "estado": 1, "valoracion": 1}
-)
-
-// Actualizar un recurso
+Actualizar recursos
+javascript
+// Actualizar un recurso específico
 db.recursos.updateOne(
   { "nombre": "Breaking Bad", "usuario_id": "user123" },
   { 
@@ -93,36 +73,26 @@ db.recursos.updateOne(
     } 
   }
 )
-
-// Actualizar fecha de terminación
-db.recursos.updateOne(
-  { "nombre": "Dune", "usuario_id": "user123" },
-  { 
-    $set: { 
-      "fecha_terminacion": ISODate("2025-06-01")
-    } 
-  }
-)
-
+Eliminar recursos
+javascript
 // Eliminar un recurso específico
 db.recursos.deleteOne({ "nombre": "Ejemplo", "usuario_id": "user123" })
-
-// Eliminar todos los recursos de un usuario
-db.recursos.deleteMany({ "usuario_id": "user123" })
-
+Sistema de Filtros y Búsqueda
+Filtrado básico
+javascript
 // Por estado
 db.recursos.find({ 
   "estado": "Terminado", 
   "usuario_id": "user123" 
 })
 
-// Por formato y plataforma
-db.recursos.find({ 
-  "formato": "Película",
-  "plataforma": "Netflix",
-  "usuario_id": "user123"
-})
+// Por formato
+db.recursos.find({ "formato": "Libro", "usuario_id": "user123" })
 
+// Por plataforma
+db.recursos.find({ "plataforma": "Netflix", "usuario_id": "user123" })
+Búsqueda avanzada
+javascript
 // Búsqueda por nombre (insensible a mayúsculas)
 db.recursos.find({ 
   "nombre": { "$regex": "witcher", "$options": "i" },
@@ -135,13 +105,15 @@ db.recursos.find({
   "valoracion": { "$gte": 4 },
   "usuario_id": "user123"
 })
+Archivos de Datos
+El repositorio incluye los siguientes archivos JSON:
 
-// Recursos agregados en los últimos 30 días
-db.recursos.find({
-  "fecha_agregado": { "$gte": new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) },
-  "usuario_id": "user123"
-})
+recursos.json: Contiene 50 registros de ejemplo con variedad de formatos, estados y plataformas para pruebas.
 
+Validación de Datos
+Aunque la validación primaria se implementa en la aplicación, se recomienda añadir las siguientes reglas de validación en MongoDB:
+
+javascript
 db.createCollection("recursos", {
   validator: {
     $jsonSchema: {
